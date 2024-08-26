@@ -1,0 +1,23 @@
+<%-include("header.ejs")%>
+  
+  <body>
+
+
+<div class="container is-fluid mt-6">
+    <h1 id="location" class="is-size-1"><%=location%></h1>
+    <h2 id="date" class="is-size-2"><%=date%></h2>
+</div>
+<div class="container is-fluid mb-6">
+    <div id="frames-container">
+      <div id="graImg" class="image-container">
+          <img src="/assets/gra.png" alt="" />
+          <div id="gra" class="centered-text"><%=gra_time%></div>
+      </div>
+      <div id="mgaImg" class="image-container">
+        <img src="/assets/mga.png" alt="" />
+        <div id="mga" class="centered-text"><%=mga_time%></div>
+      </div>
+    </div>
+</div>
+
+  <%-include("footer.ejs")%>
