@@ -63,6 +63,7 @@ function timeFormatter(timeItem) {
         minute: 'numeric', // "30"
         second: 'numeric', // "00" (optional)
         // timeZoneName: 'short'  "EDT" (optional)
+        timeZone : "America/New_York"
       };
     const formattedTime = date.toLocaleTimeString('en-US', options);
     return formattedTime
