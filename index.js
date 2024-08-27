@@ -3,7 +3,7 @@ import axios from "axios";
 import path from "path";
 import { fileURLToPath } from "url";
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 const app = express();
 
 const hebcalAPI = "https://www.hebcal.com/zmanim?cfg=json"
