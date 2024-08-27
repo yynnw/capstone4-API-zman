@@ -3,7 +3,7 @@ import axios from "axios";
 import path from "path";
 import { fileURLToPath } from "url";
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 const app = express();
 
 const hebcalAPI = "https://www.hebcal.com/zmanim?cfg=json"
@@ -24,9 +24,10 @@ app.get("/", async (req, res) => {
     const location = result.data.location.title;
     const sofZmanShmaMGA16Point1 = result.data.times.sofZmanShmaMGA16Point1;
     const sofZmanShma = result.data.times.sofZmanShma;
+    const dateItem = result.data.date;
     const mga = timeFormatter(sofZmanShmaMGA16Point1);
     const gra = timeFormatter(sofZmanShma);
-    const date = dateFormatter("2024-08-22")
+    const date = dateFormatter(dateItem)
       console.log(date)
 res.render("index.ejs",{location:location, date:date,  mga:"Magen Avraham", mga_time:mga, gra:"Gra", gra_time:gra } );
     } catch (error) {
