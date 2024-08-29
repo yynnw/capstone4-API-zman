@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get("/", async (req, res) => {
     try {
-        const result = await axios.get(hebcalAPI, {params: {"sec":"1", "geonameid":geonameid, "zip":zipCode}});
+    const result = await axios.get(hebcalAPI, {params: {"sec":"1", "geonameid":geonameid, "zip":zipCode}});
     const location = result.data.location.title;
     const sofZmanShmaMGA16Point1 = result.data.times.sofZmanShmaMGA16Point1;
     const sofZmanShma = result.data.times.sofZmanShma;
@@ -30,15 +30,16 @@ app.get("/", async (req, res) => {
     const mga = timeFormatter(sofZmanShmaMGA16Point1);
     const gra = timeFormatter(sofZmanShma);
     const date = dateFormatter(dateItem)
-      console.log(date)
-res.render("index.ejs",{location:location, date:date,  mga:"Magen Avraham", mga_time:mga, gra:"Gra", gra_time:gra } );
+    console.log(date)
+    res.render("index.ejs",{location:location, date:date,  mga:"Magen Avraham", mga_time:mga, gra:"Gra", gra_time:gra } );
     } catch (error) {
-    res.send("404 Location Not Found")
+    res.status(404).send("Location Not Found <p><a href='/'>Home</a></p>");
+    geonameid = "4833320"
     }
     
 });
 
-app.post("/geonameid", (req, res) => {
+app.post("/submit", (req, res) => {
     geonameid = req.body.geonameid;
     zipCode = req.body.zipCode;
     if (zipCode) {
