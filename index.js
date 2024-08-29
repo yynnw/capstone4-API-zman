@@ -3,7 +3,7 @@ import axios from "axios";
 import path from "path";
 import { fileURLToPath } from "url";
 
-const port = 3000;
+const port = process.env.PORT || 8080;
 const app = express();
 
 const hebcalAPI = "https://www.hebcal.com/zmanim?cfg=json"
@@ -26,22 +26,24 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get("/", async (req, res) => {
     try {
-        const result = await axios.get(hebcalAPI, {params: {"sec":"1", "geonameid":geonameid, "zip":zipCode}});
+    const result = await axios.get(hebcalAPI, {params: {"sec":"1", "geonameid":geonameid, "zip":zipCode}});
     const location = result.data.location.title;
     const sofZmanShmaMGA16Point1 = result.data.times.sofZmanShmaMGA16Point1;
     const sofZmanShma = result.data.times.sofZmanShma;
+    const dateItem = result.data.date;
     const mga = timeFormatter(sofZmanShmaMGA16Point1);
     const gra = timeFormatter(sofZmanShma);
-    const date = dateFormatter("2024-08-22")
-      console.log(date)
-res.render("index.ejs",{location:location, date:date,  mga:"Magen Avraham", mga_time:mga, gra:"Gra", gra_time:gra } );
+    const date = dateFormatter(dateItem)
+    console.log(date)
+    res.render("index.ejs",{location:location, date:date,  mga:"Magen Avraham", mga_time:mga, gra:"Gra", gra_time:gra } );
     } catch (error) {
-    res.send("404 Location Not Found")
+    res.status(404).send("Location Not Found <p><a href='/'>Home</a></p>");
+    geonameid = "4833320"
     }
     
 });
 
-app.post("/geonameid", (req, res) => {
+app.post("/submit", (req, res) => {
     geonameid = req.body.geonameid;
     zipCode = req.body.zipCode;
     if (zipCode) {
@@ -57,17 +59,8 @@ app.listen(port, () => {
     console.log(`Server running on port ${port}`)
 });
 
-//TODO: Adjust for other timezones
 function timeFormatter(timeItem) {
-    console.log(timeItem)
-    const date = new Date(timeItem);
-    const options = {
-        hour: 'numeric', // "1"
-        minute: 'numeric', // "30"
-        second: 'numeric', // "00" (optional)
-        // timeZoneName: 'short'  "EDT" (optional)
-      };
-    const formattedTime = date.toLocaleTimeString('en-US', options);
+    const formattedTime = timeItem.match(/T(\d{2}:\d{2}:\d{2})/)[1];
     return formattedTime
 }
 
