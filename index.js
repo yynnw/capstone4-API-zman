@@ -15,6 +15,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, "public")));
 
+//Not necessary to include this because express will likely figure out which view engine to use
+//but best pratice to be explicit
+app.set('view engine', 'ejs');
+
 app.set('views', path.join(__dirname, 'views'));
 
 // Middleware to parse application/x-www-form-urlencoded data
