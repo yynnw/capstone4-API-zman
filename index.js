@@ -3,7 +3,7 @@ import axios from "axios";
 import path from "path";
 import { fileURLToPath } from "url";
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 const app = express();
 
 const hebcalAPI = "https://www.hebcal.com/zmanim?cfg=json"
@@ -54,18 +54,8 @@ app.listen(port, () => {
     console.log(`Server running on port ${port}`)
 });
 
-//TODO: Adjust for other timezones
 function timeFormatter(timeItem) {
-    console.log(timeItem)
-    const date = new Date(timeItem);
-    const options = {
-        hour: 'numeric', // "1"
-        minute: 'numeric', // "30"
-        second: 'numeric', // "00" (optional)
-        // timeZoneName: 'short'  "EDT" (optional)
-        timeZone : "America/New_York"
-      };
-    const formattedTime = date.toLocaleTimeString('en-US', options);
+    const formattedTime = timeItem.match(/T(\d{2}:\d{2}:\d{2})/)[1];
     return formattedTime
 }
 
